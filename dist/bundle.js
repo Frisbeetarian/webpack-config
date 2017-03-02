@@ -79,6 +79,7 @@ var Form = function Form() {
     _classCallCheck(this, Form);
 
     alert("yay form");
+    alert("fff");
 };
 
 new Form();
