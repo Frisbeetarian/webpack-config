@@ -1,5 +1,6 @@
 var webpack = require('webpack');
 var path = require('path');
+var extractTextPlugin = require('extract-text-webpack-plugin');
 var inProduction = (process.env.NODE_ENV === 'production');
 
 module.exports = {
@@ -12,7 +13,10 @@ module.exports = {
         rules:[
             {
                 test: /\.s[ac]ss$/,
-                use: ['style-loader', 'css-loader', 'sass-loader']
+                use: extractTextPlugin.extract({
+                    use: ['css-loader', 'sass-loader'],
+                    fallback: 'style-loader'
+                })
             },
 
             {
@@ -28,7 +32,9 @@ module.exports = {
         ]
     },
 
-    plugins: []
+    plugins: [
+        new extractTextPlugin('style.css')
+    ]
 };
 
 if(inProduction){
