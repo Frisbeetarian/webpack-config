@@ -4,13 +4,18 @@ var extractTextPlugin = require('extract-text-webpack-plugin');
 var inProduction = (process.env.NODE_ENV === 'production');
 
 module.exports = {
-    entry: './src/main.js',
+    entry: {
+        app: [
+            './src/main.js',
+            './src/main.scss'
+        ]
+    },
     output: {
         path: path.resolve(__dirname, './dist'),
-        filename: 'bundle.js'
+        filename: '[name].js'
     },
     module: {
-        rules:[
+        rules: [
             {
                 test: /\.s[ac]ss$/,
                 use: extractTextPlugin.extract({
@@ -33,11 +38,15 @@ module.exports = {
     },
 
     plugins: [
-        new extractTextPlugin('style.css')
+        new extractTextPlugin('[name].css'),
+
+        new webpack.LoaderOptionsPlugin({
+            minimize: inProduction
+        })
     ]
 };
 
-if(inProduction){
+if (inProduction) {
     module.exports.plugins.push(
         new webpack.optimize.UglifyJsPlugin()
     )
